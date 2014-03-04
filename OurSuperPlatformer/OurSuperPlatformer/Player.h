@@ -9,11 +9,11 @@ public:
 	float gravityAtBeginFall;
 	// hasLanded will likely become obsolete, no point in using it if getState() does just fine.
 	// However in earlier builds the player's state would rapidly change between ONGROUND and JUMPING
-	// So this is being kept just in case.
+	// So this is being kept just in case...
 	bool hasLanded;
-	// Because gradual deceleration must be accounted for when checking side collision (also top and bottom for flying)
-	// the player's direction must be tracked at all times
+	// ...Same goes for these variables.
 	bool movingUp, movingDown, movingLeft, movingRight;
+	
 	int platformStandingOn;
 	
 	Player();
