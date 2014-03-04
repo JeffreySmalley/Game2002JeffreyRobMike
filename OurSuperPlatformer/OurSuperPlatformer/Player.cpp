@@ -83,7 +83,6 @@ void Player::setV(float x, float y)
 		v.x += x;
 	}
 	
-	
 	if (v.x >= maxVX)
 	{
 		v.x = maxVX;
@@ -94,6 +93,7 @@ void Player::setV(float x, float y)
 	}
 	if (temp <= -800)
 	{
+		
 		if (v.x<=maxVX && v.x > 0)
 		{
 			if (v.x - slowdown >= 0)
@@ -117,6 +117,7 @@ void Player::setV(float x, float y)
 			}
 		}
 	}
+	
 	if (getState()!=FLYING)
 	{
 		v.y = y;

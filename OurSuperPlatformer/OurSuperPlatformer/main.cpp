@@ -11,6 +11,7 @@ bool jumpKeyPressed;
 bool downKey = false, upKey = false, rightKey = false, leftKey = false;
 
 enum collision {NOTHING, COLLISION};
+//enum collision {NOTHING, TOPCOLLISION, BOTTOMCOLLISION, LEFTCOLLISION, RIGHTCOLLISION};
 
 collision checkPlatformCollision(Player player, Surface surface);
 //enum buttFluff {NOTHING, Y, X};
@@ -116,6 +117,7 @@ void specialKeyPress(int key, int x, int y)
 	{
 	case GLUT_KEY_RIGHT:
 		rightKey = true;
+		player.movingRight = true;
 		break;
 	case GLUT_KEY_LEFT:
 		leftKey = true;
@@ -164,12 +166,14 @@ void update()
 	{
 		if (checkPlatformCollision(player,surfaces[i])==COLLISION)
 		{
+			
 			// When a collision is detected, either one of the two statements below will call depending on whether the player is ascending or descending during a jump.
 
 			// ASCENDING - If the player's state is JUMPING and the current gravity is greater than the rate at which the player begins to fall.
 			if (player.getState() == 1 && player.getGravity() > player.gravityAtBeginFall)
 			{
 				player.setGravity(player.gravityAtBeginFall-2);
+				player.platformStandingOn = i;
 				break;
 			}
 			// DESCENDING - If the player's state is JUMPING and the player is falling.
@@ -179,10 +183,12 @@ void update()
 				player.land();
 				// Adjust the player's Y position so he does not sink into the floor.
 				player.setY(surfaces[i].getY()+player.getHeight());
+				player.platformStandingOn = i;
 				break;
 			}
-			
 		}
+		
+		// This else occurs when no collisions have been detected.
 		else
 		{
 			// The following if statement will let the player walk off the edge, poor guy.
@@ -190,14 +196,39 @@ void update()
 			// If the player is ONGROUND
 			if (player.getState() == 0)
 			{
-				// Set state to JUMPING
+				// Set state to JUMPING, this will let gravity take control...
 				player.setState(1);
-				// Immediately set the gravity to the beginning of descention, without this the player would jump automatically. Ocarina of Time this is not.
+				// ...But not before immediately set the gravity to the beginning of descension, without this the player would jump up automatically. Ocarina of Time this is not.
 				player.setGravity(player.gravityAtBeginFall);
 			}
 			//break;
 		}
 	}
+	//if (player.movingRight)
+	//{
+		for (int i = 0;i<surfaces.size();i++)
+		{
+			if (checkPlatformCollision(player,surfaces[i]) == COLLISION)
+			{
+				if (i!=player.platformStandingOn)
+				{
+					if (player.getX() <= surfaces[i].getX())
+					{
+						player.setX(surfaces[i].getX()-player.getWidth());
+					}
+					else if (player.getX() >= surfaces[i].getX())
+					{
+						player.setX(surfaces[i].getX()+surfaces[i].getWidth());
+					}
+					if (!rightKey)
+					{
+						player.setV(-0.1,0);
+					}
+					break;
+				}
+			}
+		}
+	//}
 	if (rightKey)
 	{
 		player.setV(0.1,0);
@@ -210,6 +241,9 @@ void update()
 	{
 		player.setV(-800,0);
 	}
+
+	
+
 	// If the player's state is FLYING
 	if (player.getState()==2)
 	{
@@ -425,16 +459,21 @@ void createLevel()
 	surfaces.push_back(surface);
 }
 
+//collision checkPlatformCollision(Player player, Surface surface)
+//{	
+	//if ((player.getY() - player.getHeight()) <= surface.getY())
+	//{
+		//return TOPCOLLISION;
+	//}
+//}
+
 collision checkPlatformCollision(Player player, Surface surface)
 {	
-	if ((player.getX() + player.getWidth()) >= surface.getX() && player.getX() <= surface.getX() + surface.getWidth())
+	if ((player.getX() + player.getWidth()) >= surface.getX() && player.getX() <= (surface.getX() + surface.getWidth()) && player.getY() - player.getHeight() <= surface.getY() && player.getY() >= (surface.getY()-surface.getHeight()))
 	{
-		if ((player.getY() - player.getHeight()) <= surface.getY() && player.getY() >= (surface.getY()-surface.getHeight()))
-		{
-			return COLLISION;
-		}
+		return COLLISION;
 	}
-	return NOTHING;	
+	return NOTHING;
 }
 
 int main(int argc, char **argv)
