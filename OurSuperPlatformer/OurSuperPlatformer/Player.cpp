@@ -208,6 +208,7 @@ int Player::getState()
 	{
 		return FLYING;
 	}
+	return 0;
 }
 void Player::setState(int state)
 {
