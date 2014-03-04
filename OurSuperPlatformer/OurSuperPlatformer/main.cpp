@@ -1,11 +1,33 @@
+#include <windows.h>
+#include <xinput.h>
+#include <winerror.h>
+//#include <dinput.h>
 #include <iostream>
 #include "Player.h"
 #include "Surface.h"
 #include <GL/glut.h>
 #include <vector>
+#include <math.h>
+
+#pragma comment(lib, "Xinput.lib")
+
+XINPUT_STATE gamepadState;
+
+#define DeadZone = 0.05f
 
 GLsizei width, height;
 Player player;
+
+bool AButton, BButton,XButton,YButton, downPad, upPad,rightPad,leftPad, startButton,backButton, leftSholder, rightSholder;
+
+float leftTrigger = 0;
+float rightTrigger = 0;
+float leftStickY = 0;
+float leftStickX = 0;
+float rightStickX = 0;
+float rightStickY = 0;
+
+bool gamepadConnected = false;
 
 bool jumpKeyPressed;
 bool downKey = false, upKey = false, rightKey = false, leftKey = false;
@@ -55,10 +77,6 @@ void keyPress(unsigned char key, int x, int y)
 		// X
 		case 120:
 			jumpKeyPressed = true;
-			if (player.getState() != 1 && player.getState() != 2)
-			{
-				player.setState(1);
-			}
 			break;
 		case 122:
 			//player.run = true;
@@ -148,11 +166,78 @@ void specialKeyRelease(int key, int x, int y)
 }
 void update()
 {	
+	SecureZeroMemory(&gamepadState,sizeof(XINPUT_STATE));
+	if (XInputGetState(0, &gamepadState) == ERROR_SUCCESS)
+	{
+		gamepadConnected = true;
+		AButton = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_A)!= 0);
+		BButton = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_B)!= 0);
+		YButton = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_Y)!= 0);
+		XButton = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_X)!= 0);
+		
+		upPad = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)!= 0);
+		downPad = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)!= 0);
+		leftPad = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)!= 0);
+		rightPad = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)!= 0);
+
+		leftSholder = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)!=0);
+		rightSholder = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)!=0);
+
+		startButton = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_START) !=0);
+		backButton = ((gamepadState.Gamepad.wButtons & XINPUT_GAMEPAD_BACK) !=0);
+
+		leftTrigger = (float)gamepadState.Gamepad.bLeftTrigger /255;
+		rightTrigger = (float)gamepadState.Gamepad.bRightTrigger /255;
+
+		leftStickX = max(-1,(float)gamepadState.Gamepad.sThumbLX / 32767);
+		leftStickY = max(-1, (float) gamepadState.Gamepad.sThumbLY / 32767);
+		rightStickX = max(-1,(float)gamepadState.Gamepad.sThumbLX / 32767);
+		rightStickY = max(-1, (float) gamepadState.Gamepad.sThumbLY / 32767);
+	}
+	else
+	{
+		if (gamepadConnected)
+		{
+			AButton = upPad = downPad= rightPad =leftPad= BButton=YButton=XButton= rightSholder= leftSholder = startButton =backButton= false;
+			leftTrigger = rightTrigger = leftStickX = leftStickY= rightStickX= rightStickY = 0;
+		}
+		gamepadConnected = false;
+	}
+
+	if (gamepadConnected)
+	{
+		jumpKeyPressed = AButton;
+		leftKey = leftPad;
+		rightKey = rightPad;
+		upKey = rightPad;
+		downKey = downPad;
+		if (leftStickX > 1)
+			leftStickX = 1;
+		if (leftStickX < -1)
+			leftStickX = -1;
+
+		if (leftStickY > 1)
+			leftStickY = 1;
+		if (leftStickY < -1)
+			leftStickY = -1;
+
+		if (rightStickX > 1)
+			rightStickX = 1;
+		if (rightStickX < -1)
+			rightStickX = -1;
+
+		if (rightStickY > 1)
+			rightStickY = 1;
+		if (rightStickY < -1)
+			rightStickY = -1;
+	}
+
 	if (jumpKeyPressed)
 	{
-		//player.setV(0,2.0);
-		//Above code moved to player.jump(), this implementation
-		// would cause the player to suddenly fall at a constant quick rate whenever the jump key was released.
+		if (player.getState() != 1 && player.getState() != 2)
+		{
+			player.setState(1);
+		}
 	}
 
 	// Controls all actions related to jumping, including the adjustment of gravity while midair.
