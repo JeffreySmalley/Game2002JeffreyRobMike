@@ -6,7 +6,7 @@ using namespace std;
 Player::Player()
 {
 	x = 60;
-	y = 140;
+	y = 60;
 
 	//x = 220;
 	//y = 350;

@@ -360,106 +360,106 @@ void timer(int millisec)
 void createLevel()
 {	
 	//0
-	Surface surface(50,120,500,20);
+	Surface surface(50,40,500,20);
 	surfaces.push_back(surface);
 	//1
-	surface.newSurface(50,220,500,20);
+	surface.newSurface(50,140,500,20);
 	surfaces.push_back(surface);
 	//2
-	surface.newSurface(250,150,100,50);
+	surface.newSurface(250,70,100,50);
 	surfaces.push_back(surface);
 	//3
-	surface.newSurface(500,150,100,50);
+	surface.newSurface(500,70,100,50);
 	surfaces.push_back(surface);
 	//4
-	surface.newSurface(600,200,100,100);
+	surface.newSurface(600,120,100,100);
 	surfaces.push_back(surface);
 	//5
-	surface.newSurface(700,250,100,150);
+	surface.newSurface(700,170,100,150);
 	surfaces.push_back(surface);
 	//6
-	surface.newSurface(900,250,100,150);
+	surface.newSurface(900,170,100,150);
 	surfaces.push_back(surface);
 	//7
-	surface.newSurface(1100,300,100,50);
+	surface.newSurface(1100,220,100,50);
 	surfaces.push_back(surface);
 	//8
-	surface.newSurface(1200,350,100,50);
+	surface.newSurface(1200,270,100,50);
 	surfaces.push_back(surface);
 	//9
-	surface.newSurface(1100,450,100,50);
+	surface.newSurface(1100,370,100,50);
 	surfaces.push_back(surface);
 	//10
-	surface.newSurface(1000,500,50,50);
+	surface.newSurface(1000,420,50,50);
 	surfaces.push_back(surface);
 	//11
-	surface.newSurface(850,400,50,50);
+	surface.newSurface(850,320,50,50);
 	surfaces.push_back(surface);
 	//12
-	surface.newSurface(800,450,50,50);
+	surface.newSurface(800,370,50,50);
 	surfaces.push_back(surface);
 	//13
-	surface.newSurface(650,450,50,50);
+	surface.newSurface(650,370,50,50);
 	surfaces.push_back(surface);
 	//14
-	surface.newSurface(450,300,50,50);
+	surface.newSurface(450,220,50,50);
 	surfaces.push_back(surface);
 	//15
-	surface.newSurface(400,350,50,50);
+	surface.newSurface(400,270,50,50);
 	surfaces.push_back(surface);
 	//16
-	surface.newSurface(200,350,50,50);
+	surface.newSurface(200,270,50,50);
 	surfaces.push_back(surface);
 	//17
-	surface.newSurface(100,450,50,50);
+	surface.newSurface(100,370,50,50);
 	surfaces.push_back(surface);
 	//18
-	surface.newSurface(150,500,25,25);
+	surface.newSurface(150,420,25,25);
 	surfaces.push_back(surface);
 	//19
-	surface.newSurface(200,500,25,25);
+	surface.newSurface(200,420,25,25);
 	surfaces.push_back(surface);
 	//20
-	surface.newSurface(275,550,25,25);
+	surface.newSurface(275,470,25,25);
 	surfaces.push_back(surface);
 	//21
-	surface.newSurface(400,475,25,25);
+	surface.newSurface(400,395,25,25);
 	surfaces.push_back(surface);
 	//22
-	surface.newSurface(375,550,25,75);
+	surface.newSurface(375,470,25,75);
 	surfaces.push_back(surface);
 	//23
-	surface.newSurface(425,550,25,25);
+	surface.newSurface(425,470,25,25);
 	surfaces.push_back(surface);
 	//24
-	surface.newSurface(500,525,25,25);
+	surface.newSurface(500,465,25,25);
 	surfaces.push_back(surface);
 	//25
-	surface.newSurface(550,575,25,25);
+	surface.newSurface(550,495,25,25);
 	surfaces.push_back(surface);
 	//26
-	surface.newSurface(575,500,25,25);
+	surface.newSurface(575,420,25,25);
 	surfaces.push_back(surface);
 	//27
-	surface.newSurface(675,525,25,25);
+	surface.newSurface(675,455,25,25);
 	surfaces.push_back(surface);
 	//28
-	surface.newSurface(625,575,25,25);
+	surface.newSurface(625,495,25,25);
 	surfaces.push_back(surface);
 	//29
-	surface.newSurface(700,600,25,25);
+	surface.newSurface(700,520,25,25);
 	surfaces.push_back(surface);
 	//30
-	surface.newSurface(725,625,25,25);
+	surface.newSurface(725,545,25,25);
 	surfaces.push_back(surface);
 	//31
-	surface.newSurface(825,650,25,25);
+	surface.newSurface(825,580,25,25);
 	surfaces.push_back(surface);
 	//32
-	surface.newSurface(925,625,25,25);
+	surface.newSurface(925,545,25,25);
 	surfaces.push_back(surface);
 	//33
-	surface.newSurface(1000,600,300,50);
+	surface.newSurface(1000,520,300,50);
 	surfaces.push_back(surface);
 }
 
