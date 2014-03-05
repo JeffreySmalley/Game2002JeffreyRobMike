@@ -9,7 +9,7 @@
 #include <vector>
 #include <math.h>
 
-
+					 // Changed from "Xinput" to retain compatibility with Windows 7 and older machines.
 #pragma comment(lib, "Xinput9_1_0.lib")
 
 XINPUT_STATE gamepadState;
@@ -249,9 +249,6 @@ void update()
 	player.jump();
 	// For now, only the player's position is updated in the update().
 	player.update();
-	cout << platformStandingOn << endl;
-	
-	
 	
 	for (int i = 0; i < surfaces.size(); i++)
 	{
@@ -263,15 +260,18 @@ void update()
 			// ASCENDING - If the player's state is JUMPING and the current gravity is greater than the rate at which the player begins to fall.
 			if (player.getState() == 1 && player.getGravity() > player.gravityAtBeginFall && player.getY() < surfaces[i].getY()-surfaces[i].getHeight()+2)
 			{
-				// When hitting the top
+				// Track the platform being hit. Since this platform is being tracked, the if statement for side collision will not be called for this surface
+				// because one of the conditions require the platform not to be this one. 
 				platformStandingOn = i;
-				
+				// Bounce the player off so he can begin falling
 				player.setGravity(player.gravityAtBeginFall-2);
 				break;
 			}
 			// DESCENDING - If the player's state is JUMPING and the player is falling.
 			else if (player.getState() == 1 && player.getGravity() < player.gravityAtBeginFall && player.getY() > surfaces[i].getY()+2)
 			{
+				// Track the platform being hit. Since this platform is being tracked, the if statement for side collision will not be called for this surface
+				// because one of the conditions require the platform not to be this one. 
 				platformStandingOn = i;
 				// land() will change the player's state back to ONGROUND as well as reset the gravity so the player will jump correctly every time without setting himself on fire.
 				player.land();
@@ -295,16 +295,16 @@ void update()
 				// ...But not before immediately set the gravity to the beginning of descension, without this the player would jump up automatically. Ocarina of Time this is not.
 				player.setGravity(player.gravityAtBeginFall);
 			}
-			//break;
 		}
 	}
 	
 	for (int i = 0;i<surfaces.size();i++)
 	{
-		//cout << platformStandingOn << endl;
-		//cout << player.getX() << endl;
+		// If there is a collision found with a second platform, (one that the player is currently not standing on)
+		// A side collision will be assumed.
 		if (checkPlatformCollision(player,surfaces[i]) == COLLISION && i!=platformStandingOn)
 		{		
+			// These statements will keep the player to the side of the platform to prevent a passthrough
 			if (player.getX() >= surfaces[i].getX())
 			{
 				player.setX(surfaces[i].getX()+surfaces[i].getWidth()+1);
@@ -314,12 +314,6 @@ void update()
 				player.setX(surfaces[i].getX()-player.getWidth()-1);
 			}
 			break;
-				//if (!rightKey)
-				//{
-					//player.setV(-0.1,0);
-				//}
-				//break;
-			//}
 		}
 	}
 	
