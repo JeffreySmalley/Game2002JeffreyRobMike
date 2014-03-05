@@ -65,12 +65,57 @@ void resize(int w, int h)
 	width = w;
 	height = h;
 }
+
+static char theStringBuffer[10];
+static long font = (long)GLUT_BITMAP_8_BY_13;
+
+void writeBitmapString(void *font, char *string)
+{  
+   char *c;
+
+   for (c = string; *c != '\0'; c++) glutBitmapCharacter(font, *c);
+}
+
+void floatToString(char * destStr, int precision, int val) 
+{
+   sprintf(destStr,"%i",val);
+   destStr[precision] = '\0';
+}
+
+static float gameState = 0;
+
+void loseScreen()
+{
+   glRasterPos2f(600, 400);
+   writeBitmapString((void*)font, "Game Over");
+   writeBitmapString((void*)font, theStringBuffer);
+}
+
+void winScreen()
+{
+   glRasterPos2f(600, 400);
+   writeBitmapString((void*)font, "Congratulations!");
+   writeBitmapString((void*)font, theStringBuffer);
+}
+
 void draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-	for (int i = 0; i < surfaces.size(); i++)
-		surfaces[i].draw();
-	player.draw();
+	if (gameState == 0)
+	{
+		for (int i = 0; i < surfaces.size(); i++)
+			surfaces[i].draw();
+		player.draw();
+	}
+
+	else if (gameState == 1)
+	{
+		loseScreen();
+	}
+	else if (gameState == 2)
+	{
+		winScreen();
+	}
 
 	glutPostRedisplay();
 	glutSwapBuffers();
