@@ -426,40 +426,48 @@ void createLevel()
 	surface.newSurface(400,395,25,25);
 	surfaces.push_back(surface);
 	//22
-	surface.newSurface(375,470,25,75);
+	surface.newSurface(375,570,25,75);
 	surfaces.push_back(surface);
 	//23
-	surface.newSurface(425,470,25,25);
+	surface.newSurface(425,570,25,25);
 	surfaces.push_back(surface);
 	//24
-	surface.newSurface(500,465,25,25);
+	surface.newSurface(500,565,25,25);
 	surfaces.push_back(surface);
 	//25
-	surface.newSurface(550,495,25,25);
+	surface.newSurface(550,595,25,25);
 	surfaces.push_back(surface);
 	//26
-	surface.newSurface(575,420,25,25);
+	surface.newSurface(575,520,25,25);
 	surfaces.push_back(surface);
 	//27
-	surface.newSurface(675,455,25,25);
+	surface.newSurface(675,555,25,25);
 	surfaces.push_back(surface);
 	//28
-	surface.newSurface(625,495,25,25);
+	surface.newSurface(625,595,25,25);
 	surfaces.push_back(surface);
 	//29
-	surface.newSurface(700,520,25,25);
+	surface.newSurface(700,620,25,25);
 	surfaces.push_back(surface);
 	//30
-	surface.newSurface(725,545,25,25);
+	surface.newSurface(725,645,25,25);
 	surfaces.push_back(surface);
 	//31
-	surface.newSurface(825,580,25,25);
+	surface.newSurface(825,615,25,25);
 	surfaces.push_back(surface);
 	//32
-	surface.newSurface(925,545,25,25);
+	surface.newSurface(925,645,25,25);
 	surfaces.push_back(surface);
 	//33
-	surface.newSurface(1000,520,300,50);
+	surface.newSurface(1000,620,300,50);
+	surfaces.push_back(surface);
+	//walls
+	surface.newSurface(0,1000,50,1000);
+	surfaces.push_back(surface);
+	surface.newSurface(1250,1000,50,1000);
+	surfaces.push_back(surface);
+	//ceiling
+	surface.newSurface(0,750,1250,50);
 	surfaces.push_back(surface);
 }
 
