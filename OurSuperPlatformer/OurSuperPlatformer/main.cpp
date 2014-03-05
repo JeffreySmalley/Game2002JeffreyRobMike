@@ -9,12 +9,9 @@
 #include <vector>
 #include <math.h>
 
-<<<<<<< HEAD
-#pragma comment(lib, "Xinput.lib")
-=======
-					 // Changed from "Xinput" to retain compatibility with Windows 7 and older machines.
+
+ // Changed from "Xinput" to retain compatibility with Windows 7 and older machines.
 #pragma comment(lib, "Xinput9_1_0.lib")
->>>>>>> origin/Rob
 
 XINPUT_STATE gamepadState;
 
