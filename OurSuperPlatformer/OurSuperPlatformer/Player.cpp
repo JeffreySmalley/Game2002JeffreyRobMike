@@ -7,6 +7,10 @@ Player::Player()
 {
 	x = 60;
 	y = 140;
+
+	//x = 220;
+	//y = 350;
+
 	width = 20;
 	height = 20;
 

@@ -9,7 +9,12 @@
 #include <vector>
 #include <math.h>
 
+<<<<<<< HEAD
 #pragma comment(lib, "Xinput.lib")
+=======
+					 // Changed from "Xinput" to retain compatibility with Windows 7 and older machines.
+#pragma comment(lib, "Xinput9_1_0.lib")
+>>>>>>> origin/Rob
 
 XINPUT_STATE gamepadState;
 
@@ -31,6 +36,8 @@ bool gamepadConnected = false;
 
 bool jumpKeyPressed;
 bool downKey = false, upKey = false, rightKey = false, leftKey = false;
+
+int platformStandingOn = 0;
 
 enum collision {NOTHING, COLLISION};
 //enum collision {NOTHING, TOPCOLLISION, BOTTOMCOLLISION, LEFTCOLLISION, RIGHTCOLLISION};
@@ -255,20 +262,26 @@ void update()
 			// When a collision is detected, either one of the two statements below will call depending on whether the player is ascending or descending during a jump.
 
 			// ASCENDING - If the player's state is JUMPING and the current gravity is greater than the rate at which the player begins to fall.
-			if (player.getState() == 1 && player.getGravity() > player.gravityAtBeginFall)
+			if (player.getState() == 1 && player.getGravity() > player.gravityAtBeginFall && player.getY() < surfaces[i].getY()-surfaces[i].getHeight()+2)
 			{
+				// Track the platform being hit. Since this platform is being tracked, the if statement for side collision will not be called for this surface
+				// because one of the conditions require the platform not to be this one. 
+				platformStandingOn = i;
+				// Bounce the player off so he can begin falling
 				player.setGravity(player.gravityAtBeginFall-2);
-				player.platformStandingOn = i;
 				break;
 			}
 			// DESCENDING - If the player's state is JUMPING and the player is falling.
-			else if (player.getState() == 1 && player.getGravity() < player.gravityAtBeginFall)
+			else if (player.getState() == 1 && player.getGravity() < player.gravityAtBeginFall && player.getY() > surfaces[i].getY()+2)
 			{
+				// Track the platform being hit. Since this platform is being tracked, the if statement for side collision will not be called for this surface
+				// because one of the conditions require the platform not to be this one. 
+				platformStandingOn = i;
 				// land() will change the player's state back to ONGROUND as well as reset the gravity so the player will jump correctly every time without setting himself on fire.
 				player.land();
 				// Adjust the player's Y position so he does not sink into the floor.
 				player.setY(surfaces[i].getY()+player.getHeight());
-				player.platformStandingOn = i;
+				
 				break;
 			}
 		}
@@ -286,34 +299,29 @@ void update()
 				// ...But not before immediately set the gravity to the beginning of descension, without this the player would jump up automatically. Ocarina of Time this is not.
 				player.setGravity(player.gravityAtBeginFall);
 			}
-			//break;
 		}
 	}
-	//if (player.movingRight)
-	//{
-		for (int i = 0;i<surfaces.size();i++)
-		{
-			if (checkPlatformCollision(player,surfaces[i]) == COLLISION)
+	
+	for (int i = 0;i<surfaces.size();i++)
+	{
+		// If there is a collision found with a second platform, (one that the player is currently not standing on)
+		// A side collision will be assumed.
+		if (checkPlatformCollision(player,surfaces[i]) == COLLISION && i!=platformStandingOn)
+		{		
+			// These statements will keep the player to the side of the platform to prevent a passthrough
+			if (player.getX() >= surfaces[i].getX())
 			{
-				if (i!=player.platformStandingOn)
-				{
-					if (player.getX() <= surfaces[i].getX())
-					{
-						player.setX(surfaces[i].getX()-player.getWidth());
-					}
-					else if (player.getX() >= surfaces[i].getX())
-					{
-						player.setX(surfaces[i].getX()+surfaces[i].getWidth());
-					}
-					if (!rightKey)
-					{
-						player.setV(-0.1,0);
-					}
-					break;
-				}
+				player.setX(surfaces[i].getX()+surfaces[i].getWidth()+1);
 			}
+			else if (player.getX() <= surfaces[i].getX())
+			{
+				player.setX(surfaces[i].getX()-player.getWidth()-1);
+			}
+			break;
 		}
-	//}
+	}
+	
+
 	if (rightKey)
 	{
 		player.setV(0.1,0);
@@ -354,203 +362,109 @@ void timer(int millisec)
 
 void createLevel()
 {	
+	//0
 	Surface surface(50,120,500,20);
 	surfaces.push_back(surface);
+	//1
 	surface.newSurface(50,220,500,20);
 	surfaces.push_back(surface);
+	//2
 	surface.newSurface(250,150,100,50);
 	surfaces.push_back(surface);
+	//3
 	surface.newSurface(500,150,100,50);
 	surfaces.push_back(surface);
+	//4
 	surface.newSurface(600,200,100,100);
 	surfaces.push_back(surface);
+	//5
 	surface.newSurface(700,250,100,150);
 	surfaces.push_back(surface);
+	//6
 	surface.newSurface(900,250,100,150);
 	surfaces.push_back(surface);
+	//7
 	surface.newSurface(1100,300,100,50);
 	surfaces.push_back(surface);
+	//8
 	surface.newSurface(1200,350,100,50);
 	surfaces.push_back(surface);
+	//9
 	surface.newSurface(1100,450,100,50);
 	surfaces.push_back(surface);
+	//10
 	surface.newSurface(1000,500,50,50);
 	surfaces.push_back(surface);
+	//11
 	surface.newSurface(850,400,50,50);
 	surfaces.push_back(surface);
+	//12
 	surface.newSurface(800,450,50,50);
 	surfaces.push_back(surface);
+	//13
 	surface.newSurface(650,450,50,50);
 	surfaces.push_back(surface);
+	//14
 	surface.newSurface(450,300,50,50);
 	surfaces.push_back(surface);
+	//15
 	surface.newSurface(400,350,50,50);
 	surfaces.push_back(surface);
+	//16
 	surface.newSurface(200,350,50,50);
 	surfaces.push_back(surface);
+	//17
 	surface.newSurface(100,450,50,50);
 	surfaces.push_back(surface);
+	//18
 	surface.newSurface(150,500,25,25);
 	surfaces.push_back(surface);
+	//19
 	surface.newSurface(200,500,25,25);
 	surfaces.push_back(surface);
+	//20
 	surface.newSurface(275,550,25,25);
 	surfaces.push_back(surface);
+	//21
 	surface.newSurface(400,475,25,25);
 	surfaces.push_back(surface);
+	//22
 	surface.newSurface(375,550,25,75);
 	surfaces.push_back(surface);
+	//23
 	surface.newSurface(425,550,25,25);
 	surfaces.push_back(surface);
+	//24
 	surface.newSurface(500,525,25,25);
 	surfaces.push_back(surface);
+	//25
 	surface.newSurface(550,575,25,25);
 	surfaces.push_back(surface);
+	//26
 	surface.newSurface(575,500,25,25);
 	surfaces.push_back(surface);
+	//27
 	surface.newSurface(675,525,25,25);
 	surfaces.push_back(surface);
+	//28
 	surface.newSurface(625,575,25,25);
 	surfaces.push_back(surface);
+	//29
 	surface.newSurface(700,600,25,25);
 	surfaces.push_back(surface);
+	//30
 	surface.newSurface(725,625,25,25);
 	surfaces.push_back(surface);
+	//31
 	surface.newSurface(825,650,25,25);
 	surfaces.push_back(surface);
+	//32
 	surface.newSurface(925,625,25,25);
 	surfaces.push_back(surface);
-	surface.newSurface(1000,600,300,50);
-	surfaces.push_back(surface);
-	surface.newSurface(450,300,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(400,350,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(200,350,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(100,450,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(150,500,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(200,500,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(275,550,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(400,475,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(375,550,25,75);
-	surfaces.push_back(surface);
-	surface.newSurface(425,550,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(500,525,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(550,575,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(575,500,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(675,525,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(625,575,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(700,600,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(725,625,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(825,650,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(925,625,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(1000,600,300,50);
-	surfaces.push_back(surface);
-	surface.newSurface(450,300,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(400,350,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(200,350,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(100,450,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(150,500,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(200,500,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(275,550,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(400,475,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(375,550,25,75);
-	surfaces.push_back(surface);
-	surface.newSurface(425,550,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(500,525,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(550,575,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(575,500,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(675,525,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(625,575,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(700,600,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(725,625,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(825,650,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(925,625,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(1000,600,300,50);
-	surfaces.push_back(surface);
-	surface.newSurface(450,300,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(400,350,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(200,350,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(100,450,50,50);
-	surfaces.push_back(surface);
-	surface.newSurface(150,500,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(200,500,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(275,550,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(400,475,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(375,550,25,75);
-	surfaces.push_back(surface);
-	surface.newSurface(425,550,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(500,525,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(550,575,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(575,500,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(675,525,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(625,575,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(700,600,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(725,625,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(825,650,25,25);
-	surfaces.push_back(surface);
-	surface.newSurface(925,625,25,25);
-	surfaces.push_back(surface);
+	//33
 	surface.newSurface(1000,600,300,50);
 	surfaces.push_back(surface);
 }
-
-//collision checkPlatformCollision(Player player, Surface surface)
-//{	
-	//if ((player.getY() - player.getHeight()) <= surface.getY())
-	//{
-		//return TOPCOLLISION;
-	//}
-//}
 
 collision checkPlatformCollision(Player player, Surface surface)
 {	
