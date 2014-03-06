@@ -307,7 +307,14 @@ void update()
 	player.jump();
 	// For now, only the player's position is updated in the update().
 	player.update();
-	
+	if (player.getState() == 0)
+	{
+			// Set state to JUMPING, this will let gravity take control...
+			player.setState(1);
+			// ...But not before immediately set the gravity to the beginning of descension, without this the player would jump up automatically. Ocarina of Time this is not.
+			player.setGravity(player.gravityAtBeginFall);
+	}
+
 	for (int i = 0; i < surfaces.size(); i++)
 	{
 		if (checkPlatformCollision(player,surfaces[i])==COLLISION)
@@ -339,21 +346,6 @@ void update()
 				break;
 			}
 		}
-		
-		// This else occurs when no collisions have been detected.
-		else
-		{
-			// The following if statement will let the player walk off the edge, poor guy.
-
-			// If the player is ONGROUND
-			if (player.getState() == 0)
-			{
-				// Set state to JUMPING, this will let gravity take control...
-				player.setState(1);
-				// ...But not before immediately set the gravity to the beginning of descension, without this the player would jump up automatically. Ocarina of Time this is not.
-				player.setGravity(player.gravityAtBeginFall);
-			}
-		}
 	}
 
 	for (int i = 0; i < fPlatforms.size(); i++)
@@ -379,21 +371,7 @@ void update()
 				break;
 			}
 		}
-		
-		// This else occurs when no collisions have been detected.
-		else
-		{
-			// The following if statement will let the player walk off the edge, poor guy.
-
-			// If the player is ONGROUND
-			if (player.getState() == 0)
-			{
-				// Set state to JUMPING, this will let gravity take control...
-				player.setState(1);
-				// ...But not before immediately set the gravity to the beginning of descension, without this the player would jump up automatically. Ocarina of Time this is not.
-				player.setGravity(player.gravityAtBeginFall);
-			}
-		}
+	
 	}
 	
 	for (int i = 0;i<surfaces.size();i++)
