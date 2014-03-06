@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Player.h"
 #include "Surface.h"
+#include "FlyPlatform.h"
 #include <GL/glut.h>
 #include <vector>
 #include <math.h>
@@ -40,6 +41,7 @@ enum collision {NOTHING, COLLISION};
 //enum collision {NOTHING, TOPCOLLISION, BOTTOMCOLLISION, LEFTCOLLISION, RIGHTCOLLISION};
 
 collision checkPlatformCollision(Player player, Surface surface);
+collision checkPlatformCollision(Player player, FlyPlatform fPlatform);
 //enum buttFluff {NOTHING, Y, X};
 //enum buttFluff {NOTHING, COLLISION};
 
@@ -47,6 +49,7 @@ using namespace std;
 
 //array of surfaces
 vector<Surface> surfaces;
+vector<FlyPlatform> fPlatforms;
 
 void setup()
 {
@@ -405,10 +408,10 @@ void timer(int millisec)
 void createLevel()
 {	
 	//0
-	Surface surface(50,40,500,20);
-	surfaces.push_back(surface);
+	FlyPlatform fPlatform(50,40,500,20);
+	fPlatforms.push_back(fPlatform);
 	//1
-	surface.newSurface(50,140,500,20);
+	Surface surface(50,140,500,20);
 	surfaces.push_back(surface);
 	//2
 	surface.newSurface(250,70,100,50);
