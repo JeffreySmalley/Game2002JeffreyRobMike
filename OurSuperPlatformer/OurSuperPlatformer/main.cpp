@@ -45,6 +45,7 @@ enum collision {NOTHING, COLLISION};
 //enum collision {NOTHING, TOPCOLLISION, BOTTOMCOLLISION, LEFTCOLLISION, RIGHTCOLLISION};
 
 collision checkPlatformCollision(Player player, Surface surface);
+collision checkDoorCollision(Player player, WinPoint WinPoint);
 //collision checkPlatformCollision(Player player, FlyPlatform fPlatform);
 //enum buttFluff {NOTHING, Y, X};
 //enum buttFluff {NOTHING, COLLISION};
@@ -360,6 +361,12 @@ void update()
 			}
 		}
 	}
+
+	if (checkDoorCollision(player, winner)==COLLISION)
+	{
+		gameState = 2;
+	}
+
 	flyPlatOn = false;
 	for (int i = 0; i < fPlatforms.size(); i++)
 	{
@@ -591,6 +598,16 @@ collision checkPlatformCollision(Player player, Surface surface)
 	}
 	return NOTHING;
 }
+
+collision checkDoorCollision(Player player, WinPoint surface)
+{	
+	if ((player.getX() + player.getWidth()) >= surface.getX() && player.getX() <= (surface.getX() + surface.getWidth()) && player.getY() - player.getHeight() <= surface.getY() && player.getY() >= (surface.getY()-surface.getHeight()))
+	{
+		return COLLISION;
+	}
+	return NOTHING;
+}
+
 /*collision checkPlatformCollision(Player player, FlyPlatform fPlatform)
 {	
 	if ((player.getX() + player.getWidth()) >= fPlatform.getX() && player.getX() <= (fPlatform.getX() + fPlatform.getWidth()) && player.getY() - player.getHeight() <= fPlatform.getY() && player.getY() >= (fPlatform.getY()-fPlatform.getHeight()))
