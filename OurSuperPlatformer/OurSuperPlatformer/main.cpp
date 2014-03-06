@@ -108,6 +108,10 @@ void draw()
 	{
 		for (int i = 0; i < surfaces.size(); i++)
 			surfaces[i].draw();
+		for (int i = 0; i < fPlatforms.size(); i++)
+		{
+			fPlatforms[i].draw();
+		}
 		player.draw();
 	}
 
@@ -408,7 +412,7 @@ void timer(int millisec)
 void createLevel()
 {	
 	//0
-	FlyPlatform fPlatform(50,40,500,20);
+	FlyPlatform fPlatform(50,40,450,20);
 	fPlatforms.push_back(fPlatform);
 	//1
 	Surface surface(50,140,500,20);
@@ -429,8 +433,8 @@ void createLevel()
 	surface.newSurface(900,170,100,150);
 	surfaces.push_back(surface);
 	//7
-	surface.newSurface(1100,220,100,50);
-	surfaces.push_back(surface);
+	fPlatform.newPlatform(1100,220,100,50);
+	fPlatforms.push_back(fPlatform);
 	//8
 	surface.newSurface(1200,270,100,50);
 	surfaces.push_back(surface);
@@ -459,8 +463,8 @@ void createLevel()
 	surface.newSurface(200,270,50,50);
 	surfaces.push_back(surface);
 	//17
-	surface.newSurface(100,370,50,50);
-	surfaces.push_back(surface);
+	fPlatform.newPlatform(100,370,50,50);
+	fPlatforms.push_back(fPlatform);
 	//18
 	surface.newSurface(150,420,25,25);
 	surfaces.push_back(surface);

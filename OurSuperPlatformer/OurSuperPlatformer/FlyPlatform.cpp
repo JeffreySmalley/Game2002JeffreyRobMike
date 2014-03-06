@@ -2,7 +2,10 @@
 
 FlyPlatform::FlyPlatform(float x, float y, int width, int height)
 {
-
+	this->x = x;
+	this->y = y;
+	this->width = width;
+	this->height = height;
 }
 void FlyPlatform::draw()
 {
@@ -30,5 +33,13 @@ int FlyPlatform::getWidth()
 int FlyPlatform::getHeight()
 {
 	return height;
+}
+
+void FlyPlatform::newPlatform(float x, float y, int width, int height)
+{
+	this->x = x;
+	this->y = y;
+	this->width = width;
+	this->height = height;
 }
 

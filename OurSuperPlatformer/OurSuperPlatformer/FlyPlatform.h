@@ -13,5 +13,5 @@ public:
 	float getY();
 	int getWidth();
 	int getHeight();
-	void nwePlatform(float x, float y, int width, int height);
+	void newPlatform(float x, float y, int width, int height);
 };
