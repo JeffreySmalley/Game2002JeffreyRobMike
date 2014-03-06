@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Surface.h"
 #include "FlyPlatform.h"
+#include "WinPoint.h"
 #include <GL/glut.h>
 #include <vector>
 #include <math.h>
@@ -101,6 +102,9 @@ void winScreen()
    writeBitmapString((void*)font, theStringBuffer);
 }
 
+	//end point
+	WinPoint winner(1100,670,50,50);
+
 void draw()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -112,6 +116,7 @@ void draw()
 		{
 			fPlatforms[i].draw();
 		}
+		winner.draw();
 		player.draw();
 	}
 
