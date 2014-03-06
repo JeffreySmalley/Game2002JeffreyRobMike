@@ -499,10 +499,10 @@ void createLevel()
 	surface.newSurface(1200,270,100,50);
 	surfaces.push_back(surface);
 	//9
-	surface.newSurface(1100,370,100,50);
+	surface.newSurface(1100,350,100,50);
 	surfaces.push_back(surface);
 	//10
-	surface.newSurface(1000,420,50,50);
+	surface.newSurface(1000,370,50,50);
 	surfaces.push_back(surface);
 	//11
 	surface.newSurface(850,320,50,50);
@@ -538,7 +538,7 @@ void createLevel()
 	surface.newSurface(400,395,25,25);
 	surfaces.push_back(surface);
 	//22
-	surface.newSurface(375,570,25,75);
+	surface.newSurface(375,520,25,75);
 	surfaces.push_back(surface);
 	//23
 	surface.newSurface(425,570,25,25);
