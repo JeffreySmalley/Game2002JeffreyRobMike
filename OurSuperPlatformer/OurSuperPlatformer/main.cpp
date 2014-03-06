@@ -17,7 +17,9 @@
 
 XINPUT_STATE gamepadState;
 
-#define DeadZone = 0.05f
+#define XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE  7849
+#define XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE 8689
+#define XINPUT_GAMEPAD_TRIGGER_THRESHOLD    30
 
 GLsizei width, height;
 Player player;
@@ -30,11 +32,12 @@ float leftStickY = 0;
 float leftStickX = 0;
 float rightStickX = 0;
 float rightStickY = 0;
+bool flyPlatOn;
 
 bool gamepadConnected = false;
 
 bool jumpKeyPressed;
-bool downKey = false, upKey = false, rightKey = false, leftKey = false;
+bool downKey = false, upKey = false, rightKey = false, leftKey = false, cKey = false;
 
 int platformStandingOn = 0;
 
@@ -146,17 +149,7 @@ void keyPress(unsigned char key, int x, int y)
 		//C
 		case 99:
 			// Set state to FLYING if player is not flying.
-			if (player.getState() != 2)
-			{
-				player.setState(2);
-			}
-			else
-			{
-				// Set state to JUMPING. In midair, a JUMPING state will let the player fall until hitting a platform.
-				player.setState(1);
-				// Setting gravity to -4.0 will let the player fall immediately instead of jumping up when the state is set to JUMPING.
-				player.setGravity(player.gravityAtBeginFall);
-			}
+			cKey = true;
 			break;
 	}
 }
@@ -181,6 +174,10 @@ void keyRelease(unsigned char key, int x, int y)
 						player.fallSpeed = 3.5;
 					}*/
 				}
+			break;
+		case 99:
+			// Set state to FLYING if player is not flying.
+			cKey = false;
 			break;
 		
 		case 15:
@@ -272,7 +269,7 @@ void update()
 		jumpKeyPressed = AButton;
 		leftKey = leftPad;
 		rightKey = rightPad;
-		upKey = rightPad;
+		upKey = upPad;
 		downKey = downPad;
 		if (leftStickX > 1)
 			leftStickX = 1;
@@ -293,8 +290,24 @@ void update()
 			rightStickY = 1;
 		if (rightStickY < -1)
 			rightStickY = -1;
-	}
 
+		if (gamepadState.Gamepad.sThumbLX < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
+			gamepadState.Gamepad.sThumbLX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+			leftStickX = 0;
+		if (gamepadState.Gamepad.sThumbLY < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
+			gamepadState.Gamepad.sThumbLY > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+			leftStickY = 0;
+		if (gamepadState.Gamepad.sThumbRX < XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE &&
+			gamepadState.Gamepad.sThumbRX > -XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
+			rightStickX = 0; 
+		if (gamepadState.Gamepad.sThumbRY < XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE &&
+			gamepadState.Gamepad.sThumbRY > -XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE)
+			rightStickY = 0; 
+	}
+	if (player.getState() == 2)
+		player.setV(1*leftStickX,1*leftStickY);
+	else
+		player.setV(1*leftStickX,0);
 	if (jumpKeyPressed)
 	{
 		if (player.getState() != 1 && player.getState() != 2)
@@ -347,7 +360,7 @@ void update()
 			}
 		}
 	}
-
+	flyPlatOn = false;
 	for (int i = 0; i < fPlatforms.size(); i++)
 	{
 		if (checkPlatformCollision(player,fPlatforms[i])==COLLISION)
@@ -364,7 +377,7 @@ void update()
 			{
 				
 				platformStandingOn = i;
-				
+				flyPlatOn = true;
 				player.land();
 				player.setY(fPlatforms[i].getY()+player.getHeight());
 				
@@ -372,6 +385,12 @@ void update()
 			}
 		}
 	
+	}
+	if ((flyPlatOn && YButton) ||(flyPlatOn && cKey) )
+	{
+		flyPlatOn = false;
+		player.setY(player.getY()+10);
+		player.setState(2);
 	}
 	
 	for (int i = 0;i<surfaces.size();i++)
