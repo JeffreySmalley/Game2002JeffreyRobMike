@@ -350,6 +350,46 @@ void update()
 			}
 		}
 	}
+
+	for (int i = 0; i < fPlatforms.size(); i++)
+	{
+		if (checkPlatformCollision(player,fPlatforms[i])==COLLISION)
+		{
+			
+			
+			if (player.getState() == 1 && player.getGravity() > player.gravityAtBeginFall && player.getY() < fPlatforms[i].getY()-fPlatforms[i].getHeight()+2)
+			{
+				platformStandingOn = i;
+				player.setGravity(player.gravityAtBeginFall-2);
+				break;
+			}
+			else if (player.getState() == 1 && player.getGravity() < player.gravityAtBeginFall && player.getY() > fPlatforms[i].getY()+2)
+			{
+				
+				platformStandingOn = i;
+				
+				player.land();
+				player.setY(fPlatforms[i].getY()+player.getHeight());
+				
+				break;
+			}
+		}
+		
+		// This else occurs when no collisions have been detected.
+		else
+		{
+			// The following if statement will let the player walk off the edge, poor guy.
+
+			// If the player is ONGROUND
+			if (player.getState() == 0)
+			{
+				// Set state to JUMPING, this will let gravity take control...
+				player.setState(1);
+				// ...But not before immediately set the gravity to the beginning of descension, without this the player would jump up automatically. Ocarina of Time this is not.
+				player.setGravity(player.gravityAtBeginFall);
+			}
+		}
+	}
 	
 	for (int i = 0;i<surfaces.size();i++)
 	{
@@ -370,6 +410,24 @@ void update()
 		}
 	}
 	
+	for (int i = 0;i<fPlatforms.size();i++)
+	{
+		// If there is a collision found with a second platform, (one that the player is currently not standing on)
+		// A side collision will be assumed.
+		if (checkPlatformCollision(player,fPlatforms[i]) == COLLISION && i!=platformStandingOn)
+		{		
+			// These statements will keep the player to the side of the platform to prevent a passthrough
+			if (player.getX() >= fPlatforms[i].getX())
+			{
+				player.setX(fPlatforms[i].getX()+fPlatforms[i].getWidth()+1);
+			}
+			else if (player.getX() <= fPlatforms[i].getX())
+			{
+				player.setX(fPlatforms[i].getX()-player.getWidth()-1);
+			}
+			break;
+		}
+	}
 
 	if (rightKey)
 	{
@@ -526,6 +584,14 @@ void createLevel()
 collision checkPlatformCollision(Player player, Surface surface)
 {	
 	if ((player.getX() + player.getWidth()) >= surface.getX() && player.getX() <= (surface.getX() + surface.getWidth()) && player.getY() - player.getHeight() <= surface.getY() && player.getY() >= (surface.getY()-surface.getHeight()))
+	{
+		return COLLISION;
+	}
+	return NOTHING;
+}
+collision checkPlatformCollision(Player player, FlyPlatform fPlatform)
+{	
+	if ((player.getX() + player.getWidth()) >= fPlatform.getX() && player.getX() <= (fPlatform.getX() + fPlatform.getWidth()) && player.getY() - player.getHeight() <= fPlatform.getY() && player.getY() >= (fPlatform.getY()-fPlatform.getHeight()))
 	{
 		return COLLISION;
 	}
