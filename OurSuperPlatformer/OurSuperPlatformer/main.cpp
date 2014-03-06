@@ -45,7 +45,7 @@ enum collision {NOTHING, COLLISION};
 //enum collision {NOTHING, TOPCOLLISION, BOTTOMCOLLISION, LEFTCOLLISION, RIGHTCOLLISION};
 
 collision checkPlatformCollision(Player player, Surface surface);
-collision checkPlatformCollision(Player player, FlyPlatform fPlatform);
+//collision checkPlatformCollision(Player player, FlyPlatform fPlatform);
 //enum buttFluff {NOTHING, Y, X};
 //enum buttFluff {NOTHING, COLLISION};
 
@@ -493,7 +493,7 @@ void createLevel()
 	surface.newSurface(900,170,100,150);
 	surfaces.push_back(surface);
 	//7
-	fPlatform.newPlatform(1100,220,100,50);
+	fPlatform.newSurface(1100,220,100,50);
 	fPlatforms.push_back(fPlatform);
 	//8
 	surface.newSurface(1200,270,100,50);
@@ -523,7 +523,7 @@ void createLevel()
 	surface.newSurface(200,270,50,50);
 	surfaces.push_back(surface);
 	//17
-	fPlatform.newPlatform(100,370,50,50);
+	fPlatform.newSurface(100,370,50,50);
 	fPlatforms.push_back(fPlatform);
 	//18
 	surface.newSurface(150,420,25,25);
@@ -591,14 +591,14 @@ collision checkPlatformCollision(Player player, Surface surface)
 	}
 	return NOTHING;
 }
-collision checkPlatformCollision(Player player, FlyPlatform fPlatform)
+/*collision checkPlatformCollision(Player player, FlyPlatform fPlatform)
 {	
 	if ((player.getX() + player.getWidth()) >= fPlatform.getX() && player.getX() <= (fPlatform.getX() + fPlatform.getWidth()) && player.getY() - player.getHeight() <= fPlatform.getY() && player.getY() >= (fPlatform.getY()-fPlatform.getHeight()))
 	{
 		return COLLISION;
 	}
 	return NOTHING;
-}
+}*/
 
 int main(int argc, char **argv)
 {

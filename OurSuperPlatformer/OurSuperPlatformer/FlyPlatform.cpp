@@ -1,12 +1,6 @@
 #include "FlyPlatform.h"
 
-FlyPlatform::FlyPlatform(float x, float y, int width, int height)
-{
-	this->x = x;
-	this->y = y;
-	this->width = width;
-	this->height = height;
-}
+
 void FlyPlatform::draw()
 {
 	glColor3f(0.0,0.5,0.5);
@@ -17,29 +11,5 @@ void FlyPlatform::draw()
 	glVertex3f(x+width,y-height,0.0);
 	glVertex3f(x,y-height,0.0);
 	glEnd();
-}
-float FlyPlatform::getX()
-{
-	return x;
-}
-float FlyPlatform::getY()
-{
-	return y;
-}
-int FlyPlatform::getWidth()
-{
-	return width;
-}
-int FlyPlatform::getHeight()
-{
-	return height;
-}
-
-void FlyPlatform::newPlatform(float x, float y, int width, int height)
-{
-	this->x = x;
-	this->y = y;
-	this->width = width;
-	this->height = height;
 }
 

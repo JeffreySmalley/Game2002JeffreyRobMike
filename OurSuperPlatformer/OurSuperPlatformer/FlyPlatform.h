@@ -1,17 +1,9 @@
 #include <GL/glut.h>
+#include "Surface.h"
 
-class FlyPlatform
+class FlyPlatform: public Surface
 {
-private:
-	float x, y;
-	int width, height;
-
 public:
-	FlyPlatform(float x, float y, int width, int height);
+	FlyPlatform(float x, float y, int width, int height):Surface(x,y,width,height){};
 	void draw();
-	float getX();
-	float getY();
-	int getWidth();
-	int getHeight();
-	void newPlatform(float x, float y, int width, int height);
 };
