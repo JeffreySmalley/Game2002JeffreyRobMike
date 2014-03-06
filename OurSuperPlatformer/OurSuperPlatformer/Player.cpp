@@ -17,12 +17,12 @@ Player::Player()
 	v.x = 0;
 	v.y = 0;
 
-	gravity = -1.0;
+	gravity = -4.0;
 
 	maxVX = 3;
 	slowdown = 0.5;
 
-	gravityAtBeginFall = -4.0;
+	gravityAtBeginFall = -6.0;
 	
 	// The player will spawn a tiny bit above the playing field.
 	// State is set to JUMPING to let the player fall into place.
