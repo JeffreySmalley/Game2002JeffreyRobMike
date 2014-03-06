@@ -1,9 +1,8 @@
 #include "FlyPlatform.h"
 
-FlyPlatform::FlyPlatform()
+FlyPlatform::FlyPlatform(float x, float y, int width, int height)
 {
-	width = 40;
-	height = 10;
+
 }
 void FlyPlatform::draw()
 {

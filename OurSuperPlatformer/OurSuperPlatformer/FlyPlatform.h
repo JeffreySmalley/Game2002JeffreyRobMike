@@ -7,10 +7,11 @@ private:
 	int width, height;
 
 public:
-	FlyPlatform();
+	FlyPlatform(float x, float y, int width, int height);
 	void draw();
 	float getX();
 	float getY();
 	int getWidth();
 	int getHeight();
+	void nwePlatform(float x, float y, int width, int height);
 };
