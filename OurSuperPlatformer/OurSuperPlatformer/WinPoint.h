@@ -1,17 +1,8 @@
 #include <GL/glut.h>
-class WinPoint
+#include "Surface.h"
+class WinPoint: public Surface
 {
-private:
-	float x, y;
-	int width, height;
 public:
-	WinPoint(float x, float y, int width, int height);
+	WinPoint(float x, float y, int width, int height):Surface(x,y,width,height){};
 	void draw();
-	
-	float getX();
-	float getY();
-
-	float getWidth();
-	float getHeight();
-	void newWinPoint(float x, float y, int width, int height);
 };

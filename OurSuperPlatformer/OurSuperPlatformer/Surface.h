@@ -3,7 +3,7 @@
 #include <GL/glut.h>
 class Surface
 {
-private:
+protected:
 	float x, y;
 	int width, height;
 public:
