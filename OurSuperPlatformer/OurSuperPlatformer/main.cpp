@@ -12,8 +12,9 @@
 #include <math.h>
 
 
+
  // Changed from "Xinput" to retain compatibility with Windows 7 and older machines.
-#pragma comment(lib, "Xinput9_1_0.lib")
+#pragma comment(lib, "Xinput.lib")
 
 XINPUT_STATE gamepadState;
 
@@ -79,14 +80,14 @@ static long font = (long)GLUT_BITMAP_8_BY_13;
 
 void writeBitmapString(void *font, char *string)
 {  
-   char *c;
+  char *c;
 
    for (c = string; *c != '\0'; c++) glutBitmapCharacter(font, *c);
 }
 
 void floatToString(char * destStr, int precision, int val) 
 {
-   sprintf(destStr,"%i",val);
+	sprintf_s(destStr,sizeof(destStr),"%i",val);
    destStr[precision] = '\0';
 }
 
