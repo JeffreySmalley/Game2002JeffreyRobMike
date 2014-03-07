@@ -23,6 +23,8 @@ Player::Player()
 	slowdown = 0.5;
 
 	gravityAtBeginFall = -6.0;
+
+	deathCounter = 50;
 	
 	// The player will spawn a tiny bit above the playing field.
 	// State is set to JUMPING to let the player fall into place.
@@ -36,13 +38,29 @@ Player::Player()
 void Player::draw()
 {
 	glPushMatrix();
-	if (getState() == 2)
+	glColor3f(colorR,colorG,colorB);
+
+	if (getState() == 0 || getState() == 1)
 	{
-		glColor3f(0.0,0.5,0.5);
+		colorR = 0.0;
+		colorG = 1.0;
+		colorB = 0.0;
+
+		//glColor3f(0.0,1.0,0.0);
 	}
-	else
+	else if (getState() == 2)
 	{
-		glColor3f(0.0,1.0,0.0);
+		colorR = 0.0;
+		colorG = 0.5;
+		colorB = 0.5;
+
+		//glColor3f(0.0,0.5,0.5);
+	}
+	else if (getState() == 3)
+	{
+	  //colorR will be set elsewhere, it will start at 1.0 and rapidly decrease to give a fadeout effect.
+		colorG = 0.0;
+		colorB = 0.0;
 	}
 	//glTranslatef(x, y, 0);
 	glBegin(GL_QUADS);
@@ -59,6 +77,11 @@ void Player::update()
 {
 	x += v.x;
 	y += v.y;
+
+	if (y < 40)
+	{
+		setState(3);
+	}
 }
 void Player::jump()
 {
@@ -170,6 +193,25 @@ void Player::setV(float x, float y)
 		}
 	}
 }
+bool Player::die()
+{
+	if (deathCounter == 50)
+	{
+		colorR = 1.0;
+	}
+	
+	deathCounter--;
+	colorR -= 0.02;
+
+	if (deathCounter==0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 float Player::getX()
 {
@@ -189,28 +231,24 @@ float Player::getWidth()
 }
 int Player::getState()
 {
-	// If state is equal to JUMPING
-	if (state == 1)
-	{
-		return JUMPING;
-	}
-	/*
-	if (state == FALLING)
-	{
-		return FALLING;
-	}
-	*/
-	
 	// If state is equal to ONGROUND
 	if (state == 0)
 	{
 		return ONGROUND;
 	}
-	
+	// If state is equal to JUMPING
+	if (state == 1)
+	{
+		return JUMPING;
+	}
 	// If state is equal to FLYING
 	if (state == 2)
 	{
 		return FLYING;
+	}
+	if (state == 3)
+	{
+		return DYING;
 	}
 	return 0;
 }
@@ -228,6 +266,10 @@ void Player::setState(int state)
 	{
 		this->state = FLYING;
 	} 
+	if (state == 3)
+	{
+		this->state = DYING;
+	}
 }
 void Player::setGravity(float gravity)
 {

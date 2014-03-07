@@ -94,16 +94,18 @@ static float gameState = 0;
 
 void loseScreen()
 {
-   glRasterPos2f(600, 400);
-   writeBitmapString((void*)font, "Game Over");
-   writeBitmapString((void*)font, theStringBuffer);
+	glColor3f(1.0,0.0,0.0);
+	glRasterPos2f(600, 400);
+	writeBitmapString((void*)font, "Game Over");
+	writeBitmapString((void*)font, theStringBuffer);
 }
 
 void winScreen()
 {
-   glRasterPos2f(600, 400);
-   writeBitmapString((void*)font, "Congratulations!");
-   writeBitmapString((void*)font, theStringBuffer);
+   glColor3f(0.0,1.0,0.0);
+	glRasterPos2f(600, 400);
+	writeBitmapString((void*)font, "Congratulations!");
+	writeBitmapString((void*)font, theStringBuffer);
 }
 
 	//end point
@@ -227,6 +229,7 @@ void specialKeyRelease(int key, int x, int y)
 }
 void update()
 {	
+	cout << player.getState() << endl;
 	SecureZeroMemory(&gamepadState,sizeof(XINPUT_STATE));
 	if (XInputGetState(0, &gamepadState) == ERROR_SUCCESS)
 	{
@@ -321,6 +324,13 @@ void update()
 	player.jump();
 	// For now, only the player's position is updated in the update().
 	player.update();
+	if (player.getState()==3)
+	{
+		if (player.die()==true)
+		{
+			gameState = 1;
+		}
+	}
 	if (player.getState() == 0)
 	{
 			// Set state to JUMPING, this will let gravity take control...
@@ -362,7 +372,7 @@ void update()
 		}
 	}
 
-	if (checkDoorCollision(player, winner)==COLLISION)
+	if (checkDoorCollision(player, winner)==COLLISION && player.getState() != 2)
 	{
 		gameState = 2;
 	}
@@ -407,13 +417,62 @@ void update()
 		if (checkPlatformCollision(player,surfaces[i]) == COLLISION && i!=platformStandingOn)
 		{		
 			// These statements will keep the player to the side of the platform to prevent a passthrough
+			
 			if (player.getX() >= surfaces[i].getX())
 			{
-				player.setX(surfaces[i].getX()+surfaces[i].getWidth()+1);
+				
+				if (player.getY()-player.getHeight()+3 >= surfaces[i].getY())
+				{
+					if (player.getState()==2)
+					{
+						player.setState(3);
+					}
+					player.setY(surfaces[i].getY()+player.getHeight()+1);
+				}
+				else if (player.getY() <= surfaces[i].getY()-surfaces[i].getHeight()+3)
+				{
+					if (player.getState()==2)
+					{
+						player.setState(3);
+					}
+					player.setY(surfaces[i].getY()-surfaces[i].getHeight()-1);
+				}
+				else
+				{
+					if (player.getState()==2)
+					{
+						player.setState(3);
+					}
+					player.setX(surfaces[i].getX()+surfaces[i].getWidth()+1);
+				}
 			}
+			
 			else if (player.getX() <= surfaces[i].getX())
 			{
-				player.setX(surfaces[i].getX()-player.getWidth()-1);
+				if (player.getY()-player.getHeight()+3 >= surfaces[i].getY())
+				{
+					if (player.getState()==2)
+					{
+						player.setState(3);
+					}
+					player.setY(surfaces[i].getY()+player.getHeight()+1);
+				}
+				else if (player.getY() <= surfaces[i].getY()-surfaces[i].getHeight()+3)
+				{
+					if (player.getState()==2)
+					{
+						player.setState(3);
+					}
+					player.setY(surfaces[i].getY()-surfaces[i].getHeight()-1);
+				}
+				else
+				{
+					if (player.getState()==2)
+					{
+						player.setState(3);
+					}
+					player.setX(surfaces[i].getX()-player.getWidth()-1);
+				}
 			}
 			break;
 		}
@@ -426,13 +485,47 @@ void update()
 		if (checkPlatformCollision(player,fPlatforms[i]) == COLLISION && i!=platformStandingOn)
 		{		
 			// These statements will keep the player to the side of the platform to prevent a passthrough
+			
 			if (player.getX() >= fPlatforms[i].getX())
 			{
-				player.setX(fPlatforms[i].getX()+fPlatforms[i].getWidth()+1);
+				if (player.getY()-player.getHeight()+3 >= fPlatforms[i].getY())
+				{
+					player.setY(fPlatforms[i].getY()+player.getHeight()+1);
+					if (player.getState()==2)
+					{
+						flyPlatOn = true;
+						player.setState(0);
+					}
+				}
+				else if (player.getY() <= fPlatforms[i].getY()-fPlatforms[i].getHeight()+3)
+				{
+					player.setY(fPlatforms[i].getY()-fPlatforms[i].getHeight()-1);
+				}
+				else
+				{
+					player.setX(fPlatforms[i].getX()+fPlatforms[i].getWidth()+1);
+				}
 			}
+			
 			else if (player.getX() <= fPlatforms[i].getX())
 			{
-				player.setX(fPlatforms[i].getX()-player.getWidth()-1);
+				if (player.getY()-player.getHeight()+3 >= fPlatforms[i].getY())
+				{
+					player.setY(fPlatforms[i].getY()+player.getHeight()+1);
+					if (player.getState()==2)
+					{
+						flyPlatOn = true;
+						player.setState(0);
+					}
+				}
+				else if (player.getY() <= fPlatforms[i].getY()-fPlatforms[i].getHeight()+3)
+				{
+					player.setY(fPlatforms[i].getY()-fPlatforms[i].getHeight()-1);
+				}
+				else
+				{
+					player.setX(fPlatforms[i].getX()-player.getWidth()-1);
+				}
 			}
 			break;
 		}

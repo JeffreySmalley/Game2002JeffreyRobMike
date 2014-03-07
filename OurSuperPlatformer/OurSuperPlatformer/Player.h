@@ -22,6 +22,7 @@ public:
 	void update();
 	void jump();
 	void land();
+	bool die();
 	float getX();
 	float getY();
 	float getWidth();
@@ -43,6 +44,10 @@ private:
 		float y;
 	};
 	
+	int deathCounter;
+
+	float colorR, colorG, colorB;
+
 	float maxVX;
 	float slowdown;
 	
@@ -56,7 +61,7 @@ private:
 	float fallSpeed;
 	float width, height;
 	
-	enum stateList{ONGROUND,JUMPING,FLYING};
+	enum stateList{ONGROUND,JUMPING,FLYING,DYING};
 	stateList state;
 	
 };
